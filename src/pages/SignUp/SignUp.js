@@ -74,7 +74,6 @@ export const SignUp = () => {
   };
 
   const goToSignIn = () => {
-    console.log("@@@testing");
     navigate("/", { replace: true });
   };
 

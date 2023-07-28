@@ -28,7 +28,7 @@ import {
 } from "./TicketCard.styles";
 
 export const TicketCard = (props) => {
-  const { data, index } = props;
+  const { data, index , isDialogOpen, setIsDialogOpen } = props;
   const dispatch = useDispatch();
   const allStages = useSelector(stagesSelector);
   const priorityStyle = (priority) => {
@@ -92,12 +92,15 @@ export const TicketCard = (props) => {
             aria-label="delete ticket"
             component="span"
           >
+
             <DeleteIcon />
           </IconButton>
           <IconButton
             onClick={() => {
+              setIsDialogOpen(true);
               dispatch(setTaskEditable());
               dispatch(setEditData(data));
+              
             }}
             color="primary"
             aria-label="edit ticket"
