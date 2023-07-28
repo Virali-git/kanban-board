@@ -20,22 +20,19 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   allTasksSelector,
   isTaskEditableSelector,
-  setAllTasks,
+  setTaskData,
   editDataSelector,
   setUpdateData,
   setTaskUnEditable,
   // clearEditData,
-} from "../redux/dashboardSlice";
+} from "../../redux/dashboardSlice";
 import { v4 as uuidv4 } from "uuid";
 import styled from "@emotion/styled";
 
 const validationSchema = yup.object({
   taskName: yup.string("Enter a Task").required("Task is required"),
   priority: yup.string("Enter the Priority").required("Priority is required"),
-  deadline: yup
-    .date()
-    .nullable()
-    .required("Please Enter a Date"),
+  deadline: yup.date().nullable().required("Please Enter a Date"),
 });
 
 export const TaskForm = () => {
@@ -66,7 +63,7 @@ export const TaskForm = () => {
           },
         ];
 
-        dispatch(setAllTasks(updatedTaskList));
+        dispatch(setTaskData(updatedTaskList));
         formik.resetForm();
       } else {
         let updatedData = {};
@@ -94,8 +91,7 @@ export const TaskForm = () => {
   const TypographyText = styled(Typography)({
     pb: 2,
     fontWeight: "700",
-
-  })
+  });
   return (
     <Box>
       <TypographyText>Create a Task</TypographyText>
@@ -130,7 +126,6 @@ export const TaskForm = () => {
                 error={
                   formik.touched.priority && Boolean(formik.errors.priority)
                 }
-                // helperText={formik.touched.priority && formik.errors.priority}
               >
                 <MenuItem value="low">Low</MenuItem>
                 <MenuItem value="medium">Medium</MenuItem>
@@ -177,5 +172,3 @@ export const TaskForm = () => {
     </Box>
   );
 };
-
-

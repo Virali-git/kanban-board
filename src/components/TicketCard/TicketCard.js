@@ -1,10 +1,8 @@
+import React from "react";
 import {
-  Card,
   CardContent,
   Typography,
   CardActions,
-  Button,
-  Box,
   IconButton,
 } from "@mui/material";
 import { format } from "date-fns";
@@ -14,16 +12,20 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  moveForward,
+  moveTaskForward,
   stagesSelector,
-  moveBackward,
-  deleteTask,
+  moveTaskBackward,
   setTaskEditable,
   setEditData,
   setDeleteData,
-} from "../redux/dashboardSlice";
-import PropTypes from "prop-types";
-import { openModal } from "../redux/dialogSlice";
+} from "../../redux/dashboardSlice";
+import { openModal } from "../../redux/dialogSlice";
+
+import {
+  StyledCard,
+  StyledTicketCard,
+  StyledTypography,
+} from "./TicketCard.styles";
 
 export const TicketCard = (props) => {
   const { data, index } = props;
@@ -39,19 +41,21 @@ export const TicketCard = (props) => {
         return "error.dark";
     }
   };
+
   return (
-    <Box>
-      <Card>
+    <StyledTicketCard>
+      <StyledCard>
         <CardContent>
-          <Typography>{data?.taskName}</Typography>
-          <Typography
+          <StyledTypography variant="h6" component="h2">
+            {data?.taskName}
+          </StyledTypography>
+          <StyledTypography
             sx={{
               color: priorityStyle(data?.priority),
-              fontWeight: "bold",
             }}
           >
             {data?.priority}
-          </Typography>
+          </StyledTypography>
           <Typography>
             {format(new Date(data?.deadline), "dd/MM/yyyy")}
           </Typography>
@@ -60,10 +64,10 @@ export const TicketCard = (props) => {
           <IconButton
             disabled={data?.stage === allStages?.indexOf("Backlog")}
             onClick={() => {
-              dispatch(moveBackward(data));
+              dispatch(moveTaskBackward(data));
             }}
             color="primary"
-            aria-label="change tciket to previous state"
+            aria-label="change ticket to previous state"
             component="span"
           >
             <ArrowBackIcon />
@@ -71,7 +75,7 @@ export const TicketCard = (props) => {
           <IconButton
             disabled={data?.stage === allStages?.indexOf("Done")}
             onClick={() => {
-              dispatch(moveForward(data));
+              dispatch(moveTaskForward(data));
             }}
             color="primary"
             aria-label="change ticket to next state"
@@ -83,7 +87,6 @@ export const TicketCard = (props) => {
             onClick={() => {
               dispatch(openModal());
               dispatch(setDeleteData(data));
-              // dispatch(deleteTask(data));
             }}
             color="error"
             aria-label="delete ticket"
@@ -103,11 +106,7 @@ export const TicketCard = (props) => {
             <EditIcon />
           </IconButton>
         </CardActions>
-      </Card>
-    </Box>
+      </StyledCard>
+    </StyledTicketCard>
   );
-};
-
-TicketCard.propTypes = {
-  data: PropTypes.object.isRequired,
 };

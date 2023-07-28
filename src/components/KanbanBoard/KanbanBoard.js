@@ -15,48 +15,21 @@ import {
   allTasksSelector,
   deleteTask,
   deleteDataSelector,
-  setAllTasks,
-} from "../redux/dashboardSlice";
-import { closeModal } from "../redux/dialogSlice";
-import { Modal } from "./Modal";
-import { TicketCard } from "./TicketCard";
+  setTaskData,
+} from "../../redux/dashboardSlice";
+import { closeModal } from "../../redux/dialogSlice";
+import { Modal } from "../Modal/Modal";
+import { TicketCard } from "../TicketCard/TicketCard";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { userTaskDataSelector } from "../redux/appSlice";
-import { styled } from "@mui/material/styles";
-
-const KanbanBoardContainer = styled(Box)({
-  padding: "20px",
-  backgroundColor: "#FFC0CB",
-});
-
-const KanbanHeader = styled(Box)({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: "20px",
-});
-
-const StageContainer = styled(Grid)({
-  backgroundColor: "#997379",
-  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-  borderRadius: "8px",
-  padding: "16px",
-  height: "100%",
-});
-
-const KanbanTitle = styled(Typography)({
-  fontWeight: "700",
-});
-
-const CardContainer = styled(Box)({
-  marginBottom: "10px",
-});
-
-const ListContainer = styled("ul")({
-  listStyleType: "none",
-  margin: "10px",
-  padding: "0",
-});
+import { userTaskDataSelector } from "../../redux/appSlice";
+import {
+  KanbanBoardContainer,
+  ListContainer,
+  CardContainer,
+  KanbanHeader,
+  KanbanTitle,
+  StageContainer,
+} from "./KanbanBoard.styles";
 
 export const KanbanBoard = () => {
   const dispatch = useDispatch();
@@ -66,8 +39,6 @@ export const KanbanBoard = () => {
   const [allTaskData, setAllTaskData] = useState([]);
 
   const userTaskData = useSelector(userTaskDataSelector);
-
-  console.log("@@@", userTaskData);
 
   useEffect(() => {
     if (allTask?.length) {
@@ -85,7 +56,6 @@ export const KanbanBoard = () => {
   };
 
   const dragEndHandler = (result) => {
-    console.log("Drag Result: ", result);
     const { source, destination, draggableId } = result;
     let allTaskData = [...allTask];
     allTaskData = allTaskData?.map((task) => {
@@ -93,11 +63,10 @@ export const KanbanBoard = () => {
         return { ...task, stage: mapStage(destination?.droppableId) };
       else return task;
     });
-    dispatch(setAllTasks(allTaskData));
+    dispatch(setTaskData(allTaskData));
   };
 
   const mapStage = (stage) => {
-    console.log("Stage: ", stage);
     switch (stage) {
       case "Backlog":
         return 0;

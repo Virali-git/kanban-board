@@ -33,23 +33,23 @@ export const dashboardSlice = createSlice({
         id: "4",
       },
     ],
-    stages: ["Backlog", "To-Do", "On Going", "Done"],
     isTaskEditable: false,
     editData: {},
     deleteData: {},
+    stages: ["Backlog", "To-Do", "On Going", "Done"],
   },
   reducers: {
-    setAllTasks: (state, action) => {
+    setTaskData: (state, action) => {
       state.allTasks = action?.payload;
     },
-    moveForward: (state, action) => {
+    moveTaskForward: (state, action) => {
       state.allTasks = state?.allTasks?.map((task) => {
         if (task?.id === action?.payload?.id)
           return { ...task, stage: action?.payload?.stage + 1 };
         else return task;
       });
     },
-    moveBackward: (state, action) => {
+    moveTaskBackward: (state, action) => {
       state.allTasks = state?.allTasks?.map((task) => {
         if (task?.id === action?.payload?.id)
           return { ...task, stage: action?.payload?.stage - 1 };
@@ -57,7 +57,6 @@ export const dashboardSlice = createSlice({
       });
     },
     deleteTask: (state, action) => {
-      console.log("Delete Task Called: ", action?.payload);
       state.allTasks = state?.allTasks?.filter(
         (task) => task?.id !== action?.payload?.id
       );
@@ -90,9 +89,9 @@ export const dashboardSlice = createSlice({
 });
 
 export const {
-  setAllTasks,
-  moveForward,
-  moveBackward,
+  setTaskData,
+  moveTaskForward,
+  moveTaskBackward,
   deleteTask,
   setTaskEditable,
   setTaskUnEditable,

@@ -1,6 +1,6 @@
 import { Dialog } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModal, isModalOpenSelector } from "../redux/dialogSlice";
+import { closeModal, isModalOpenSelector } from "../../redux/dialogSlice";
 
 export const Modal = (props) => {
   const openDialog = useSelector(isModalOpenSelector);

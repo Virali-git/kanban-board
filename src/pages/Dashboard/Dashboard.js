@@ -1,6 +1,6 @@
 import { Container } from "@mui/material";
-import { TaskForm } from "../../components/TaskForm";
-import { KanbanBoard } from "../../components/KanbanBoard";
+import { TaskForm } from "../../components/TaskForm/TaskForm";
+import { KanbanBoard } from "../../components/KanbanBoard/KanbanBoard";
 
 export const Dashboard = () => {
   return (

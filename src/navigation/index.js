@@ -1,7 +1,7 @@
 import { Routes, Route, Link } from "react-router-dom";
 import { Dashboard } from "../pages/Dashboard/Dashboard";
-import { Login } from "../pages/Login";
-import { SignUp } from "../pages/SignUp";
+import { Login } from "../pages/Login/Login";
+import { SignUp } from "../pages/SignUp/SignUp";
 import { ProtectedRoute } from "./ProtectedRoute";
 
 

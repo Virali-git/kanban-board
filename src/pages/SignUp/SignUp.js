@@ -1,24 +1,28 @@
 import React from "react";
-import { PhotoCamera } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import {
   Container,
   Typography,
   Grid,
-  Box,
-  TextField,
   Button,
-  Avatar,
-  styled,
   IconButton,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-//import { LOGIN } from "../navigation/ROUTES";
 import { useDispatch } from "react-redux";
-import {setIsLoggedIn, setUserTaskData } from "../redux/appSlice";
-
+import { setIsLoggedIn } from "../../redux/appSlice";
+import {
+  Input,
+  AvatarChip,
+  AvatarContainer,
+  SignUpButton,
+  LoginTextFields,
+  SignUpForm,
+  SignInTextContainer,
+  SectionTitle,
+  SignUpContainer,
+} from "./SignUp.styles";
 
 const phoneRegExp = /^[6-9]\d{9}$/;
 
@@ -34,73 +38,6 @@ const validationSchema = yup.object({
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
     .required("Please enter your contact number"),
-});
-
-const Input = styled("input")({
-  display: "none",
-});
-
-const AvatarContainer = styled(Box)({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  flexDirection: "column",
-  marginBottom: "1rem",
-});
-
-const AvatarChip = styled(Avatar)({
-  width: "9em",
-  height: "9em",
-  borderRadius: "20%",
-});
-
-const SignUpContainer = styled(Grid)({
-  padding: "2rem",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  flexDirection: "column",
-});
-
-const SectionTitle = styled(Typography)({
-  paddingBottom: "20px",
-  textAlign: "center",
-  fontSize: 28,
-  fontWeight: 700,
-  textDecoration: "underline",
-});
-
-const SignInTextContainer = styled(Grid)({
-  height: "100%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  flexDirection: "column",
-  "& .MuiTypography-root": {
-    fontSize: 24,
-    color: "#997379",
-    marginBottom: "1rem",
-  },
-  "& button": {
-    color: "#000",
-  },
-});
-
-const SignUpForm = styled(Box)({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  width: "80%",
-  margin: "0 auto",
-});
-
-const LoginTextFields = styled(TextField)({
-  paddingBottom: "2rem",
-});
-
-const SignUpButton = styled(Button)({
-  marginTop: "1rem",
 });
 
 export const SignUp = () => {
@@ -121,14 +58,13 @@ export const SignUp = () => {
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
       signUpHandler();
-
     },
   });
 
-  const signUpHandler = () =>{
+  const signUpHandler = () => {
     dispatch(setIsLoggedIn());
-    navigate('/', { replace: true });
-  }
+    navigate("/", { replace: true });
+  };
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -139,7 +75,7 @@ export const SignUp = () => {
 
   const goToSignIn = () => {
     console.log("@@@testing");
-   
+    navigate("/", { replace: true });
   };
 
   return (
@@ -147,9 +83,7 @@ export const SignUp = () => {
       <Grid container>
         <SignUpContainer item xs={12} md={12}>
           <SectionTitle>Sign Up Form</SectionTitle>
-          <SignUpForm   
-            component="form"	
-            onSubmit={formik.handleSubmit}>
+          <SignUpForm component="form" onSubmit={formik.handleSubmit}>
             <AvatarContainer>
               <AvatarChip src={formik.values.profilePic} />
               <label htmlFor="icon-button-file">
@@ -160,7 +94,11 @@ export const SignUp = () => {
                   type="file"
                   onChange={onImageChange}
                 />
-                <IconButton color="primary" aria-label="upload picture" component="span">
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                >
                   <AddIcon />
                 </IconButton>
               </label>
@@ -232,13 +170,15 @@ export const SignUp = () => {
           xs={12}
           md={12}
           style={{
-            color: '#ffff',
+            color: "#ffff",
           }}
         >
           <SignInTextContainer>
-            <Typography variant="h5" styles={{color:"#fff"}}>Already Have an Account?</Typography>
+            <Typography variant="h5" styles={{ color: "#fff" }}>
+              Already Have an Account?
+            </Typography>
             <Button variant="text" onClick={goToSignIn}>
-             Login In
+              Login In
             </Button>
           </SignInTextContainer>
         </Grid>

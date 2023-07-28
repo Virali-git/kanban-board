@@ -1,12 +1,21 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {setIsLoggedIn, setUserTaskData } from "../redux/appSlice";
-import { loginAsync } from "../utility/api";
+import { setIsLoggedIn, setUserTaskData } from "../../redux/appSlice";
+import { loginAsync } from "../../utility/api";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import ReCAPTCHA from "react-google-recaptcha";
-//import { DASHBOARD, SIGNUP } from "../navigation/ROUTES";
+
+import {
+  LoginContainer,
+  LoginFormContainer,
+  LoginTextFields,
+  RecaptchaContainer,
+  FormActions,
+  LoginTitle,
+  LoginForm,
+} from "./Login.styles";
 
 const validationSchema = yup.object({
   email: yup
@@ -30,7 +39,6 @@ export const Login = () => {
     validateOnChange: true,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-    
       alert(JSON.stringify(values, null, 2));
       loginHandler();
     },
@@ -38,15 +46,10 @@ export const Login = () => {
 
   const loginHandler = () => {
     dispatch(setIsLoggedIn());
-   // dispatch(setUserTaskData());
-    
-   // dispatch(loginAsync(dispatch ,formik.values.email,formik.values.password));
-    navigate('dashboard', { replace: true });
-    
+    navigate("dashboard", { replace: true });
   };
 
   const onChange = (value) => {
-    // console.log("Captcha value:", value);
     formik.setFieldValue("recaptcha", value);
   };
 
@@ -55,21 +58,15 @@ export const Login = () => {
   };
 
   const onSignUp = () => {
-    navigate('sign-up', { replace: true });
+    navigate("sign-up", { replace: true });
   };
 
   return (
-    <Box sx={styles.LoginContainer}>
-      <Box sx={styles.LoginFormContainer}>
-        <Typography variant="h1" sx={styles.LoginTitle}>
-          K'Ban Board Login
-        </Typography>
-        <Box
-          sx={styles.LoginForm}
-          component="form"
-          onSubmit={formik.handleSubmit}
-        >
-          <TextField
+    <LoginContainer>
+      <LoginFormContainer>
+        <LoginTitle variant="h1">K'Ban Board Login</LoginTitle>
+        <LoginForm component="form" onSubmit={formik.handleSubmit}>
+          <LoginTextFields
             fullWidth
             id="email"
             name="email"
@@ -79,9 +76,8 @@ export const Login = () => {
             onChange={formik.handleChange}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
-            sx={styles.LoginTextFields}
           />
-          <TextField
+          <LoginTextFields
             fullWidth
             id="password"
             name="password"
@@ -92,9 +88,8 @@ export const Login = () => {
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
-            sx={styles.LoginTextFields}
           />
-          <Box sx={styles.RecaptchaContainer}>
+          <RecaptchaContainer>
             <ReCAPTCHA
               id="recaptcha"
               name="recaptcha"
@@ -107,59 +102,17 @@ export const Login = () => {
                 {formik.errors.recaptcha}
               </Typography>
             ) : null}
-          </Box>
-          <Box sx={styles.FormActions}>
+          </RecaptchaContainer>
+          <FormActions>
             <Button variant="contained" type="submit">
               Login
             </Button>
             <Button variant="text" onClick={onSignUp}>
               Sign Up
             </Button>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+          </FormActions>
+        </LoginForm>
+      </LoginFormContainer>
+    </LoginContainer>
   );
-};
-
-const styles = {
-  LoginContainer: {
-    display: "flex",
-    justifyContent: "center",
-    flexDirection: "column",
-    alignItems: "center",
-    maxWidth: "500px",
-    margin: "auto",
-    minHeight: "100vh",
-  },
-  LoginFormContainer: {
-    border: "1px solid",
-    borderColor: "secondary.main",
-    p: 2,
-  },
-  LoginForm: {
-    display: "flex",
-    justifyContent: "ceter",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  LoginTitle: {
-    fontSize: 30,
-    pb: 2,
-    fontWeight: 700,
-    textAlign: "center",
-  },
-  LoginTextFields: {
-    pb: 2,
-  },
-  RecaptchaContainer: {
-    pb: 2,
-    display: "flex",
-    justifyContent: "center",
-    flexDirection: "column",
-  },
-  FormActins: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
 };
