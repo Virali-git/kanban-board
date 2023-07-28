@@ -1,0 +1,101 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Virali",
+      "username": "Viralithaker2",
+      "email": "test@example.com",
+      "password": "123",
+      "contactNumber": "1234567890",
+      "profileImage": null,
+      "token": "abc123", 
+      "todos": [
+        {
+          "id": 1,
+          "name": "Buy groceries",
+          "state": "In Progress",
+          "priority": "High",
+          "deadline": "2023-07-30"
+        },
+        {
+          "id": 2,
+          "name": "Complete project report",
+          "state": "Pending",
+          "priority": "Medium",
+          "deadline": "2023-08-05"
+        },
+        {
+          "id": 3,
+          "name": "Read a book",
+          "state": "Completed",
+          "priority": "Low",
+          "deadline": "2023-07-27"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "john",
+      "username": "john123",
+      "email": "test1@example.com",
+      "password": "1234",
+      "contactNumber": "1234567890",
+      "profileImage": null,
+      "todos": [
+        {
+          "id": 1,
+          "name": "Buy daal",
+          "state": "In Progress",
+          "priority": "High",
+          "deadline": "2023-07-30"
+        },
+        {
+          "id": 2,
+          "name": "buy blues",
+          "state": "Pending",
+          "priority": "Medium",
+          "deadline": "2023-08-05"
+        },
+        {
+          "id": 3,
+          "name": "buy books",
+          "state": "Completed",
+          "priority": "Low",
+          "deadline": "2023-07-27"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Raj",
+      "username": "Raj123",
+      "email": "test2@example.com",
+      "password": "12345",
+      "contactNumber": "1234567890",
+      "profileImage": null,
+      "todos": [
+        {
+          "id": 1,
+          "name": "Buy Rice",
+          "state": "In Progress",
+          "priority": "High",
+          "deadline": "2023-07-30"
+        },
+        {
+          "id": 2,
+          "name": "Bug grass",
+          "state": "Pending",
+          "priority": "Medium",
+          "deadline": "2023-08-05"
+        },
+        {
+          "id": 3,
+          "name": "buy books",
+          "state": "Completed",
+          "priority": "Low",
+          "deadline": "2023-07-27"
+        }
+      ]
+    }
+  ]
+}
