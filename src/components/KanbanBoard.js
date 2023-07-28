@@ -16,7 +16,7 @@ import {
   deleteTask,
   deleteDataSelector,
   setAllTasks,
-} from "../pages/Dashboard/dashboardSlice";
+} from "../redux/dashboardSlice";
 import { closeDialog } from "../redux/dialogSlice";
 import { CustomDialog } from "./CustomDialog";
 import { TicketCard } from "./TicketCard";

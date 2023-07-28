@@ -26,7 +26,7 @@ import {
   setUpdateData,
   setTaskUnEditable,
   // clearEditData,
-} from "../pages/Dashboard/dashboardSlice";
+} from "../redux/dashboardSlice";
 import { v4 as uuidv4 } from "uuid";
 
 const validationSchema = yup.object({
@@ -35,8 +35,6 @@ const validationSchema = yup.object({
   deadline: yup
     .date()
     .nullable()
-    // .min(new Date())
-    //   .matches(phoneRegExp, "Phone number is not valid")
     .required("Please Enter a Date"),
 });
 
@@ -45,17 +43,14 @@ export const AddTask = () => {
   const dispatch = useDispatch();
   const allTasks = useSelector(allTasksSelector);
   const editData = useSelector(editDataSelector);
-  //   const [tasks, setTask] = useState([]);
   const formik = useFormik({
     initialValues: {
       taskName: "",
       priority: "",
       deadline: new Date(),
-      //   deadline: format(new Date(), "dd/MM/yyyy"),
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      // console.log("Is Form Valid: ", formik.isValid);
       alert(JSON.stringify(values, null, 2));
 
       if (!isEditable) {
@@ -71,17 +66,9 @@ export const AddTask = () => {
           },
         ];
 
-        // console.log("All Tasks: ", updatedTaskList);
-        //   setTask(updatedTaskList);
         dispatch(setAllTasks(updatedTaskList));
         formik.resetForm();
       } else {
-        // console.log(
-        //   "Edited values---------: ",
-        //   editData,
-        //   values?.deadline?.toISOString(),
-        //   values?.deadline
-        // );
         let updatedData = {};
         updatedData = {
           ...editData,

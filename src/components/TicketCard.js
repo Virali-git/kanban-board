@@ -21,7 +21,7 @@ import {
   setTaskEditable,
   setEditData,
   setDeleteData,
-} from "../pages/Dashboard/dashboardSlice";
+} from "../redux/dashboardSlice";
 import PropTypes from "prop-types";
 import { handleDialogOpen } from "../redux/dialogSlice";
 
