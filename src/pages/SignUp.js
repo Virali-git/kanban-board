@@ -15,7 +15,7 @@ import {
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { LOGIN } from "../navigation/ROUTES";
+//import { LOGIN } from "../navigation/ROUTES";
 import { useDispatch } from "react-redux";
 import {setIsLoggedIn, setUserTaskData } from "../redux/appSlice";
 
@@ -127,7 +127,7 @@ export const SignUp = () => {
 
   const signUpHandler = () =>{
     dispatch(setIsLoggedIn());
-    navigate(LOGIN, { replace: true });
+    navigate('/', { replace: true });
   }
 
   const onImageChange = (event) => {

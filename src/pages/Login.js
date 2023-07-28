@@ -6,7 +6,7 @@ import { loginAsync } from "../utility/api";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import ReCAPTCHA from "react-google-recaptcha";
-import { DASHBOARD, SIGNUP } from "../navigation/ROUTES";
+//import { DASHBOARD, SIGNUP } from "../navigation/ROUTES";
 
 const validationSchema = yup.object({
   email: yup
@@ -30,7 +30,7 @@ export const Login = () => {
     validateOnChange: true,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      // console.log("Is Form Valid: ", formik.isValid);
+    
       alert(JSON.stringify(values, null, 2));
       loginHandler();
     },
@@ -41,7 +41,7 @@ export const Login = () => {
    // dispatch(setUserTaskData());
     
    // dispatch(loginAsync(dispatch ,formik.values.email,formik.values.password));
-    navigate(DASHBOARD, { replace: true });
+    navigate('dashboard', { replace: true });
     
   };
 
@@ -55,7 +55,7 @@ export const Login = () => {
   };
 
   const onSignUp = () => {
-    navigate(SIGNUP, { replace: true });
+    navigate('sign-up', { replace: true });
   };
 
   return (
