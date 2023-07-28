@@ -17,11 +17,46 @@ import {
   deleteDataSelector,
   setAllTasks,
 } from "../redux/dashboardSlice";
-import { closeDialog } from "../redux/dialogSlice";
-import { CustomDialog } from "./CustomDialog";
+import { closeModal } from "../redux/dialogSlice";
+import { Modal } from "./Modal";
 import { TicketCard } from "./TicketCard";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { userTaskDataSelector } from "../redux/appSlice";
+import { styled } from "@mui/material/styles";
+
+const KanbanBoardContainer = styled(Box)({
+  padding: "20px",
+  backgroundColor: "#FFC0CB",
+});
+
+const KanbanHeader = styled(Box)({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "20px",
+});
+
+const StageContainer = styled(Grid)({
+  backgroundColor: "#997379",
+  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+  borderRadius: "8px",
+  padding: "16px",
+  height: "100%",
+});
+
+const KanbanTitle = styled(Typography)({
+  fontWeight: "700",
+});
+
+const CardContainer = styled(Box)({
+  marginBottom: "10px",
+});
+
+const ListContainer = styled("ul")({
+  listStyleType: "none",
+  margin: "10px",
+  padding: "0",
+});
 
 export const KanbanBoard = () => {
   const dispatch = useDispatch();
@@ -30,11 +65,9 @@ export const KanbanBoard = () => {
   const allStages = useSelector(stagesSelector);
   const [allTaskData, setAllTaskData] = useState([]);
 
-  const userTaskData = useSelector(userTaskDataSelector)
+  const userTaskData = useSelector(userTaskDataSelector);
 
   console.log("@@@", userTaskData);
-
-
 
   useEffect(() => {
     if (allTask?.length) {
@@ -48,7 +81,7 @@ export const KanbanBoard = () => {
 
   const deleteHandler = () => {
     dispatch(deleteTask(deleteData));
-    dispatch(closeDialog());
+    dispatch(closeModal());
   };
 
   const dragEndHandler = (result) => {
@@ -77,58 +110,35 @@ export const KanbanBoard = () => {
     }
   };
 
-  const styles = {
-    KanbanBoard: {
-      padding: "20px",
-      backgroundColor: "#FFC0CB",
-    },
-    KanbanHeader: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: "20px",
-    },
-    StageContainer: {
-      backgroundColor: "#997379",
-      boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-      borderRadius: "8px",
-      padding: "16px",
-      height: "100%",
-    },
-    CardContainer: {
-      marginBottom: "10px",
-    },
-    ListContainer: {
-      listStyleType: "none",
-      margin: "10px",
-      padding: "0",
-    },
-    KanbanTitle: {
-      fontWeight: "700",
-    },
-  };
-
   return (
-    <Box sx={styles.KanbanBoard}>
-      <Box sx={styles.KanbanHeader}>
-        <Typography sx={styles.KanbanTitle}>Kanban Board</Typography>
+    <KanbanBoardContainer>
+      <KanbanHeader>
+        <KanbanTitle>Kanban Board</KanbanTitle>
         <Typography>Created: {allTask?.length}</Typography>
         <Typography>
           Completed:{" "}
-          {allTask?.filter((task) => task?.stage === allStages?.indexOf("Done")).length}
+          {
+            allTask?.filter(
+              (task) => task?.stage === allStages?.indexOf("Done")
+            ).length
+          }
         </Typography>
         <Typography>
           Pending:{" "}
-          {allTask?.filter((task) => task?.stage !== allStages?.indexOf("Done")).length}
+          {
+            allTask?.filter(
+              (task) => task?.stage !== allStages?.indexOf("Done")
+            ).length
+          }
         </Typography>
-      </Box>
+      </KanbanHeader>
       <Grid container spacing={2}>
         <DragDropContext onDragEnd={dragEndHandler}>
           {allTaskData?.map((stage, index) => (
             <Droppable droppableId={allStages[index]} key={allStages[index]}>
               {(provided) => {
                 return (
-                  <Grid
+                  <StageContainer
                     key={allStages[index]}
                     item
                     xs={12}
@@ -136,39 +146,53 @@ export const KanbanBoard = () => {
                     md={3}
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    sx={styles.StageContainer}
                   >
-                    <Box sx={styles.KanbanContainer}>
-                      <Typography sx={{ mx: 2.5, mt: 1 }}>{allStages[index]}</Typography>
-                      <Box component={"ul"} sx={styles.ListContainer}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography sx={{ mx: 2.5, mt: 1, fontWeight: "700" }}>
+                        {allStages[index]}
+                      </Typography>
+                      <ListContainer>
                         {stage?.map((ticket, i) => (
-                          <Draggable key={ticket?.id} draggableId={ticket?.id} index={index}>
+                          <Draggable
+                            key={ticket?.id}
+                            draggableId={ticket?.id}
+                            index={index}
+                          >
                             {(provided, snapshot) => {
                               return (
-                                <Box
-                                  sx={styles.CardContainer}
+                                <CardContainer
                                   component={"li"}
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
                                 >
-                                  <TicketCard ref={provided.innerRef} data={ticket} index={i} />
-                                </Box>
+                                  <TicketCard
+                                    ref={provided.innerRef}
+                                    data={ticket}
+                                    index={i}
+                                  />
+                                </CardContainer>
                               );
                             }}
                           </Draggable>
                         ))}
-                      </Box>
+                      </ListContainer>
                     </Box>
                     {provided?.placeholder}
-                  </Grid>
+                  </StageContainer>
                 );
               }}
             </Droppable>
           ))}
         </DragDropContext>
       </Grid>
-      <CustomDialog>
+      <Modal>
         <DialogTitle id="alert-dialog-title">Remove Ticket</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -181,13 +205,13 @@ export const KanbanBoard = () => {
           </Button>
           <Button
             variant="outlined"
-            onClick={() => dispatch(closeDialog())}
+            onClick={() => dispatch(closeModal())}
             autoFocus
           >
             No
           </Button>
         </DialogActions>
-      </CustomDialog>
-    </Box>
+      </Modal>
+    </KanbanBoardContainer>
   );
 };

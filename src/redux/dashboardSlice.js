@@ -40,7 +40,6 @@ export const dashboardSlice = createSlice({
   },
   reducers: {
     setAllTasks: (state, action) => {
-      // console.log("Set task Action Called: ----------->", action.payload);
       state.allTasks = action?.payload;
     },
     moveForward: (state, action) => {
@@ -73,9 +72,7 @@ export const dashboardSlice = createSlice({
     setEditData: (state, action) => {
       state.editData = action?.payload;
     },
-    // clearEditData: (state, action) => {
-    //   state.editData = {};
-    // },
+
     setUpdateData: (state, action) => {
       state.allTasks = state?.allTasks.map((task) => {
         if (action?.payload?.id === task?.id) return action?.payload;
@@ -101,7 +98,6 @@ export const {
   setTaskUnEditable,
   setEditData,
   setUpdateData,
-  // clearEditData,
   setDeleteData,
   clearDeleteData,
 } = dashboardSlice.actions;

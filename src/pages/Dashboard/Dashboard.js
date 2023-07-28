@@ -1,11 +1,11 @@
 import { Container } from "@mui/material";
-import { AddTask } from "../../components/AddTask";
+import { TaskForm } from "../../components/TaskForm";
 import { KanbanBoard } from "../../components/KanbanBoard";
 
 export const Dashboard = () => {
   return (
     <Container maxWidth="xl">
-      <AddTask />
+      <TaskForm />
       <KanbanBoard />
     </Container>
   );

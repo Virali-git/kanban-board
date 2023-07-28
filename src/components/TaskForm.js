@@ -15,7 +15,6 @@ import * as yup from "yup";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,6 +27,7 @@ import {
   // clearEditData,
 } from "../redux/dashboardSlice";
 import { v4 as uuidv4 } from "uuid";
+import styled from "@emotion/styled";
 
 const validationSchema = yup.object({
   taskName: yup.string("Enter a Task").required("Task is required"),
@@ -38,7 +38,7 @@ const validationSchema = yup.object({
     .required("Please Enter a Date"),
 });
 
-export const AddTask = () => {
+export const TaskForm = () => {
   const isEditable = useSelector(isTaskEditableSelector);
   const dispatch = useDispatch();
   const allTasks = useSelector(allTasksSelector);
@@ -76,10 +76,8 @@ export const AddTask = () => {
           priority: values?.priority,
           deadline: values?.deadline?.toISOString(),
         };
-        // console.log("New Updated data: ", updatedData);
         dispatch(setUpdateData(updatedData));
         dispatch(setTaskUnEditable());
-        // dispatch(clearEditData());
         formik.resetForm();
       }
     },
@@ -92,9 +90,15 @@ export const AddTask = () => {
       formik.setFieldValue("deadline", new Date(editData?.deadline), true);
     }
   }, [editData]);
+
+  const TypographyText = styled(Typography)({
+    pb: 2,
+    fontWeight: "700",
+
+  })
   return (
     <Box>
-      <Typography sx={styles.FormTitle}>Create a Task</Typography>
+      <TypographyText>Create a Task</TypographyText>
       <Box component="form" onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={3}>
@@ -174,9 +178,4 @@ export const AddTask = () => {
   );
 };
 
-const styles = {
-  FormTitle: {
-    pb: 2,
-    fontWeight: "700",
-  },
-};
+

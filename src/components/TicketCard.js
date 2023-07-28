@@ -23,7 +23,7 @@ import {
   setDeleteData,
 } from "../redux/dashboardSlice";
 import PropTypes from "prop-types";
-import { handleDialogOpen } from "../redux/dialogSlice";
+import { openModal } from "../redux/dialogSlice";
 
 export const TicketCard = (props) => {
   const { data, index } = props;
@@ -81,7 +81,7 @@ export const TicketCard = (props) => {
           </IconButton>
           <IconButton
             onClick={() => {
-              dispatch(handleDialogOpen());
+              dispatch(openModal());
               dispatch(setDeleteData(data));
               // dispatch(deleteTask(data));
             }}

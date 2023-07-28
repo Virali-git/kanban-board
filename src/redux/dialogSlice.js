@@ -6,21 +6,16 @@ export const dialogSlice = createSlice({
     isDialogOpen: false,
   },
   reducers: {
-    handleDialogOpen: (state) => {
-      console.log("Dialog open called:");
+    openModal: (state) => {
       state.isDialogOpen = true;
     },
-    closeDialog: (state) => {
+    closeModal: (state) => {
       state.isDialogOpen = false;
     },
   },
 });
 
-export const { handleDialogOpen, closeDialog } = dialogSlice.actions;
-
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state) => state.counter.value)`
-export const isDialogOpenSelector = (state) => state.dialog.isDialogOpen;
+export const { openModal, closeModal } = dialogSlice.actions;
+export const isModalOpenSelector = (state) => state.dialog.isDialogOpen;
 
 export default dialogSlice.reducer;
