@@ -28,9 +28,15 @@ import {
 } from "./TicketCard.styles";
 
 export const TicketCard = (props) => {
-  const { data, index , isDialogOpen, setIsDialogOpen } = props;
+  const { data, index, isDialogOpen, setIsDialogOpen } = props;
   const dispatch = useDispatch();
   const allStages = useSelector(stagesSelector);
+  /**
+   * Determines the MUI theme color variant based on the priority value.
+   * @function priorityStyle
+   * @param {string} priority - The priority value (e.g., "low", "medium", or any other value).
+   * @returns {string} The MUI theme color variant corresponding to the priority value.
+   */
   const priorityStyle = (priority) => {
     switch (priority) {
       case "low":
@@ -92,7 +98,6 @@ export const TicketCard = (props) => {
             aria-label="delete ticket"
             component="span"
           >
-
             <DeleteIcon />
           </IconButton>
           <IconButton
@@ -100,7 +105,6 @@ export const TicketCard = (props) => {
               setIsDialogOpen(true);
               dispatch(setTaskEditable());
               dispatch(setEditData(data));
-              
             }}
             color="primary"
             aria-label="edit ticket"

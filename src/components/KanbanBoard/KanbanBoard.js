@@ -21,7 +21,6 @@ import { closeModal } from "../../redux/dialogSlice";
 import { Modal } from "../Modal/Modal";
 import { TicketCard } from "../TicketCard/TicketCard";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { userTaskDataSelector } from "../../redux/appSlice";
 import {
   KanbanBoardContainer,
   ListContainer,
@@ -38,8 +37,6 @@ export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
   const allStages = useSelector(stagesSelector);
   const [allTaskData, setAllTaskData] = useState([]);
 
-  const userTaskData = useSelector(userTaskDataSelector);
-
   useEffect(() => {
     if (allTask?.length) {
       let tempAllData = allStages?.map((_, index) => {
@@ -50,34 +47,49 @@ export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
     }
   }, [allTask]);
 
-  const deleteHandler = () => {
-    dispatch(deleteTask(deleteData));
-    dispatch(closeModal());
-  };
+/**
+ * Deletes a task and closes the modal.
+ * @function deleteHandler
+ */
+const deleteHandler = () => {
+  dispatch(deleteTask(deleteData)); // Dispatches the action to delete the task using the provided `deleteData`.
+  dispatch(closeModal()); // Dispatches the action to close the modal.
+};
 
-  const dragEndHandler = (result) => {
-    const { source, destination, draggableId } = result;
-    let allTaskData = [...allTask];
-    allTaskData = allTaskData?.map((task) => {
-      if (task?.id === draggableId)
-        return { ...task, stage: mapStage(destination?.droppableId) };
-      else return task;
-    });
-    dispatch(setTaskData(allTaskData));
-  };
+/**
+ * Handles the end of a task drag and drop operation.
+ * @function dragEndHandler
+ * @param {Object} result - The result object containing information about the drag and drop operation.
+ */
+const dragEndHandler = (result) => {
+  const { source, destination, draggableId } = result;
+  let allTaskData = [...allTask]; // Creates a copy of all tasks.
+  allTaskData = allTaskData?.map((task) => {
+    if (task?.id === draggableId)
+      return { ...task, stage: mapStage(destination?.droppableId) }; // Updates the task's stage based on the destination droppableId using the `mapStage` function.
+    else return task;
+  });
+  dispatch(setTaskData(allTaskData)); // Dispatches the action to update the task data in the store with the modified `allTaskData`.
+};
 
-  const mapStage = (stage) => {
-    switch (stage) {
-      case "Backlog":
-        return 0;
-      case "To-Do":
-        return 1;
-      case "On Going":
-        return 2;
-      default:
-        return 3;
-    }
-  };
+/**
+ * Maps stage names to their corresponding indexes.
+ * @function mapStage
+ * @param {string} stage - The name of the stage.
+ * @returns {number} The corresponding index of the stage.
+ */
+const mapStage = (stage) => {
+  switch (stage) {
+    case "Backlog":
+      return 0;
+    case "To-Do":
+      return 1;
+    case "On Going":
+      return 2;
+    default:
+      return 3;
+  }
+};
 
   return (
     <KanbanBoardContainer>

@@ -44,38 +44,61 @@ export const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      username: "",
-      email: "",
-      password: "",
-      contact: "",
-      profilePic: "",
-    },
-    validateOnChange: true,
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      signUpHandler();
-    },
-  });
+ // Formik configuration for the sign-up form
+/**
+ * Handles form submission and validation for the sign-up form.
+ * @const formik
+ * @type {Object}
+ * @param {Object} initialValues - The initial values for the form.
+ * @param {boolean} validateOnChange - Enables validation on each change of form fields.
+ * @param {Object} validationSchema - The validation schema for the form.
+ * @param {function} onSubmit - The function to handle form submission.
+ */
+const formik = useFormik({
+  initialValues: {
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+    contact: "",
+    profilePic: "",
+  },
+  validateOnChange: true, // Enables validation on each change of form fields.
+  validationSchema: validationSchema, // The validation schema for the sign-up form fields.
+  onSubmit: (values) => {
+    alert(JSON.stringify(values, null, 2)); // Displays an alert with the form values in a formatted JSON string.
+    signUpHandler(); // Calls the signUpHandler function after form submission.
+  },
+});
 
-  const signUpHandler = () => {
-    dispatch(setIsLoggedIn());
-    navigate("/", { replace: true });
-  };
+/**
+ * Handles user sign-up and navigation to the home page.
+ * @function signUpHandler
+ */
+const signUpHandler = () => {
+  dispatch(setIsLoggedIn()); // Dispatches the action to set the user as logged in after successful sign-up.
+  navigate("/", { replace: true }); // Navigates to the home page, replacing the current history entry.
+};
 
-  const onImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
-      formik.setFieldValue("profilePic", URL.createObjectURL(img));
-    }
-  };
+/**
+ * Handles the onChange event for the profile picture input field.
+ * @function onImageChange
+ * @param {Object} event - The event object representing the change event.
+ */
+const onImageChange = (event) => {
+  if (event.target.files && event.target.files[0]) {
+    let img = event.target.files[0];
+    formik.setFieldValue("profilePic", URL.createObjectURL(img)); // Sets the formik form field value for the profile picture to a URL representing the selected image.
+  }
+};
 
-  const goToSignIn = () => {
-    navigate("/", { replace: true });
-  };
+/**
+ * Navigates to the sign-in page.
+ * @function goToSignIn
+ */
+const goToSignIn = () => {
+  navigate("/", { replace: true }); // Navigates to the sign-in page, replacing the current history entry.
+};
 
   return (
     <Container maxWidth="sm">

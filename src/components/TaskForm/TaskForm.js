@@ -42,49 +42,77 @@ export const TaskForm = ({ isDialogOpen, setIsDialogOpen }) => {
   const dispatch = useDispatch();
   const allTasks = useSelector(allTasksSelector);
   const editData = useSelector(editDataSelector);
-  const formik = useFormik({
-    initialValues: {
-      taskName: "",
-      priority: "",
-      deadline: new Date(),
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      if (!isEditable) {
-        let updatedTaskList = [];
-        updatedTaskList = [
-          ...allTasks,
-          {
-            taskName: values?.taskName,
-            priority: values?.priority,
-            deadline: values?.deadline?.toISOString(),
-            stage: 0,
-            id: uuidv4(),
-          },
-        ];
-
-        dispatch(setTaskData(updatedTaskList));
-        formik.resetForm();
-        setIsDialogOpen(false);
-      } else {
-        let updatedData = {};
-        updatedData = {
-          ...editData,
+ // Formik configuration
+/**
+ * Handles the form submission and dispatches appropriate actions based on whether it's an edit or new task.
+ * @const formik
+ * @type {Object}
+ * @param {Object} initialValues - The initial values for the form.
+ * @param {Object} validationSchema - The validation schema for the form.
+ * @param {function} onSubmit - The function to handle form submission.
+ */
+const formik = useFormik({
+  initialValues: {
+    taskName: "",
+    priority: "",
+    deadline: new Date(),
+  },
+  validationSchema: validationSchema,
+  onSubmit: (values) => {
+    if (!isEditable) {
+      // If it's not an editable task (new task)
+      let updatedTaskList = [];
+      updatedTaskList = [
+        ...allTasks,
+        {
           taskName: values?.taskName,
           priority: values?.priority,
           deadline: values?.deadline?.toISOString(),
-        };
-        dispatch(setUpdateData(updatedData));
-        dispatch(setTaskUnEditable());
-        formik.resetForm();
-        setIsDialogOpen(false);
-      }
-    },
-  });
+          stage: 0,
+          id: uuidv4(), // Generate a new unique ID for the task using the uuidv4 function.
+        },
+      ];
 
-  const handleOpenDialog = () => {
-    setIsDialogOpen(true);
-  };
+      // Dispatches the action to update the task list in the store with the new task.
+      dispatch(setTaskData(updatedTaskList));
+
+      // Resets the form to its initial values.
+      formik.resetForm();
+
+      // Closes the dialog.
+      setIsDialogOpen(false);
+    } else {
+      // If it's an editable task
+      let updatedData = {};
+      updatedData = {
+        ...editData,
+        taskName: values?.taskName,
+        priority: values?.priority,
+        deadline: values?.deadline?.toISOString(),
+      };
+
+      // Dispatches the action to update the task data with the edited task.
+      dispatch(setUpdateData(updatedData));
+
+      // Dispatches the action to set the task as uneditable.
+      dispatch(setTaskUnEditable());
+
+      // Resets the form to its initial values.
+      formik.resetForm();
+
+      // Closes the dialog.
+      setIsDialogOpen(false);
+    }
+  },
+});
+
+/**
+ * Opens the dialog.
+ * @function handleOpenDialog
+ */
+const handleOpenDialog = () => {
+  setIsDialogOpen(true); // Sets the state to open the dialog.
+};
 
   useEffect(() => {
     if (isEditable) {

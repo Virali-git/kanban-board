@@ -31,37 +31,66 @@ export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+ 
+
+  // Formik configuration for the login form
+  /**
+   * Handles form submission and validation for the login form.
+   * @const formik
+   * @type {Object}
+   * @param {Object} initialValues - The initial values for the form.
+   * @param {boolean} validateOnChange - Enables validation on each change of form fields.
+   * @param {Object} validationSchema - The validation schema for the form.
+   * @param {function} onSubmit - The function to handle form submission.
+   */
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
       recaptcha: "",
     },
-    validateOnChange: true,
-    validationSchema: validationSchema,
+    validateOnChange: true, // Enables validation on each change of form fields.
+    validationSchema: validationSchema, // The validation schema for the login form fields.
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      loginHandler();
+      alert(JSON.stringify(values, null, 2)); // Displays an alert with the form values in a formatted JSON string.
+      loginHandler(); // Calls the loginHandler function after form submission.
     },
   });
-
+  
+  /**
+   * Handles user login and navigation to the dashboard.
+   * @function loginHandler
+   */
   const loginHandler = () => {
-    dispatch(setIsLoggedIn());
-    navigate("dashboard", { replace: true });
+    dispatch(setIsLoggedIn()); // Dispatches the action to set the user as logged in.
+    navigate("dashboard", { replace: true }); // Navigates to the dashboard page, replacing the current history entry.
   };
-
+  
+  /**
+   * Handles the onChange event of the reCAPTCHA component.
+   * @function onChange
+   * @param {string} value - The value of the reCAPTCHA.
+   */
   const onChange = (value) => {
-    formik.setFieldValue("recaptcha", value);
+    formik.setFieldValue("recaptcha", value); // Updates the formik form field value for the reCAPTCHA with the provided value.
   };
-
+  
+  /**
+   * Handles the onExpired event of the reCAPTCHA component.
+   * @function onExpired
+   */
   const onExpired = () => {
-    formik.setFieldValue("recaptcha", "");
+    formik.setFieldValue("recaptcha", ""); // Resets the formik form field value for the reCAPTCHA to an empty string when it expires.
   };
-
+  
+  /**
+   * Navigates to the sign-up page.
+   * @function onSignUp
+   */
   const onSignUp = () => {
-    navigate("sign-up", { replace: true });
+    navigate("sign-up", { replace: true }); // Navigates to the sign-up page, replacing the current history entry.
   };
-
+  
   return (
     <LoginContainer>
       <LoginFormContainer>
