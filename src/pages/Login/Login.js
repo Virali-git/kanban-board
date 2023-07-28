@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {  Button, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setIsLoggedIn, setUserTaskData } from "../../redux/appSlice";
@@ -6,6 +6,7 @@ import { loginAsync } from "../../utility/api";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import ReCAPTCHA from "react-google-recaptcha";
+import { ReCAPTCHA_KEY } from "../../config/config";
 
 import {
   LoginContainer,
@@ -93,7 +94,7 @@ export const Login = () => {
             <ReCAPTCHA
               id="recaptcha"
               name="recaptcha"
-              sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+              sitekey={ReCAPTCHA_KEY }
               onExpired={onExpired}
               onChange={onChange}
             />

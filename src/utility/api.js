@@ -1,8 +1,8 @@
 import axios from "axios";
 import { setIsLoggedIn,setUserTaskData } from "../redux/appSlice";
+import { API_ENDPOINT } from "../config/config";
 
 
-const API_ENDPOINT = "http://localhost:3001/users";
 
 export const loginAsync = async (dispatch, email, password) => {
     try {

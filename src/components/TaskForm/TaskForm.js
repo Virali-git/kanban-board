@@ -9,7 +9,6 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Grid,
   Typography,
@@ -29,7 +28,6 @@ import {
   editDataSelector,
   setUpdateData,
   setTaskUnEditable,
-  // clearEditData,
 } from "../../redux/dashboardSlice";
 import { v4 as uuidv4 } from "uuid";
 import styled from "@emotion/styled";
@@ -40,7 +38,6 @@ const validationSchema = yup.object({
 });
 
 export const TaskForm = ({ isDialogOpen, setIsDialogOpen }) => {
-  //const [isDialogOpen, setIsDialogOpen] = useState(false);
   const isEditable = useSelector(isTaskEditableSelector);
   const dispatch = useDispatch();
   const allTasks = useSelector(allTasksSelector);
@@ -53,8 +50,6 @@ export const TaskForm = ({ isDialogOpen, setIsDialogOpen }) => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      // alert(JSON.stringify(values, null, 2));
-
       if (!isEditable) {
         let updatedTaskList = [];
         updatedTaskList = [
@@ -106,86 +101,11 @@ export const TaskForm = ({ isDialogOpen, setIsDialogOpen }) => {
   return (
     <Box>
       <TypographyText>Create a Task</TypographyText>
-      {/* <Box component="form" onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} md={3}>
-            <TextField
-              fullWidth
-              id="taskName"
-              name="taskName"
-              label="Enter a Task"
-              variant="outlined"
-              value={formik.values.taskName}
-              onChange={formik.handleChange}
-              error={formik.touched.taskName && Boolean(formik.errors.taskName)}
-              helperText={formik.touched.taskName && formik.errors.taskName}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <FormControl
-              fullWidth
-              error={formik.touched.priority && Boolean(formik.errors.priority)}
-            >
-              <InputLabel id="priorityt-label">Priority</InputLabel>
-              <Select
-                labelId="priorityt-label"
-                id="priority"
-                name="priority"
-                value={formik.values.priority}
-                label="Priority"
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.priority && Boolean(formik.errors.priority)
-                }
-              >
-                <MenuItem value="low">Low</MenuItem>
-                <MenuItem value="medium">Medium</MenuItem>
-                <MenuItem value="high">High</MenuItem>
-              </Select>
-              {formik.touched.priority && formik.errors.priority && (
-                <FormHelperText>Error</FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="Enter Deadline"
-                value={formik.values.deadline}
-                onChange={(value) =>
-                  formik.setFieldValue("deadline", value, true)
-                }
-                inputFormat="dd/MM/yyyy"
-                renderInput={(params) => (
-                  <TextField
-                    id="deadline"
-                    name="deadline"
-                    error={
-                      formik.touched.deadline && Boolean(formik.errors.deadline)
-                    }
-                    helperText={
-                      formik.touched.deadline && formik.errors.deadline
-                    }
-                    fullWidth
-                    {...params}
-                  />
-                )}
-              />
-            </LocalizationProvider>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Button variant="outlined" type="submit">
-              {!isEditable ? "Add Task" : "Edit Task"}
-            </Button>
-          </Grid>
-        </Grid>
-      </Box> */}
       <Button onClick={handleOpenDialog} variant="outlined">
         Add Task
       </Button>
       <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         <Box component="form" onSubmit={formik.handleSubmit} p={2}>
-          {/* Increase the maxWidth to make the dialog wider */}
           <DialogTitle id="alert-dialog-title" style={{ maxWidth: "500px" }}>
             TESting
           </DialogTitle>

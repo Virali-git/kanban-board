@@ -31,7 +31,7 @@ import {
   StageContainer,
 } from "./KanbanBoard.styles";
 
-export const KanbanBoard = ({isDialogOpen, setIsDialogOpen}) => {
+export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
   const dispatch = useDispatch();
   const deleteData = useSelector(deleteDataSelector);
   const allTask = useSelector(allTasksSelector);
@@ -142,8 +142,8 @@ export const KanbanBoard = ({isDialogOpen, setIsDialogOpen}) => {
                                   {...provided.dragHandleProps}
                                 >
                                   <TicketCard
-                                  isDialogOpen = {isDialogOpen}
-                                  setIsDialogOpen= {setIsDialogOpen}
+                                    isDialogOpen={isDialogOpen}
+                                    setIsDialogOpen={setIsDialogOpen}
                                     ref={provided.innerRef}
                                     data={ticket}
                                     index={i}
