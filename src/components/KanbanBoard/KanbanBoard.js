@@ -36,7 +36,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 const LazyModal = React.lazy(() => import("../Modal/Modal"));
 
-
 export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
   const dispatch = useDispatch();
   const deleteData = useSelector(deleteDataSelector);
@@ -132,152 +131,154 @@ export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-  <KanbanBoardContainer>
-      <KanbanHeader>
-        <KanbanTitle>Kanban Board</KanbanTitle>
-        <Typography>Created: {allTask?.length}</Typography>
-        <Typography>
-          Completed:{" "}
-          {
-            allTask?.filter(
-              (task) => task?.stage === allStages?.indexOf("Done")
-            ).length
-          }
-        </Typography>
-        <Typography>
-          Pending:{" "}
-          {
-            allTask?.filter(
-              (task) => task?.stage !== allStages?.indexOf("Done")
-            ).length
-          }
-        </Typography>
-      </KanbanHeader>
-      <Grid container spacing={2}>
-        <DragDropContext onDragEnd={dragEndHandler}>
-          {allTaskData?.map((stage, index) => (
-            <Droppable droppableId={allStages[index]} key={allStages[index]}>
-              {(provided) => {
-                return (
-                  <StageContainer
-                    key={allStages[index]}
-                    item
-                    xs={12}
-                    sm={6}
-                    md={3}
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                      }}
+      <KanbanBoardContainer>
+        <KanbanHeader>
+          <KanbanTitle>Kanban Board</KanbanTitle>
+          <Typography>Created: {allTask?.length}</Typography>
+          <Typography>
+            Completed:{" "}
+            {
+              allTask?.filter(
+                (task) => task?.stage === allStages?.indexOf("Done")
+              ).length
+            }
+          </Typography>
+          <Typography>
+            Pending:{" "}
+            {
+              allTask?.filter(
+                (task) => task?.stage !== allStages?.indexOf("Done")
+              ).length
+            }
+          </Typography>
+        </KanbanHeader>
+        <Grid container spacing={2} justifyContent="center">
+          <DragDropContext onDragEnd={dragEndHandler}>
+            {allTaskData?.map((stage, index) => (
+              <Droppable droppableId={allStages[index]} key={allStages[index]}>
+                {(provided) => {
+                  return (
+                    <StageContainer
+                      key={allStages[index]}
+                      item
+                      xs={12}
+                      sm={6}
+                      md={3}
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
                     >
-                      <Typography sx={{ mx: 2.5, mt: 1, fontWeight: "700" }}>
-                        {allStages[index]}
-                      </Typography>
-                      <ListContainer>
-                        {stage?.map((ticket, i) => (
-                          <Draggable
-                            key={ticket?.id}
-                            draggableId={ticket?.id}
-                            index={index}
-                          >
-                            {(provided, snapshot) => {
-                              return (
-                                <CardContainer
-                                  component={"li"}
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                >
-                                  <TicketCard
-                                    isDialogOpen={isDialogOpen}
-                                    setIsDialogOpen={setIsDialogOpen}
-                                    data={ticket}
-                                    index={i}
-                                  />
-                                </CardContainer>
-                              );
-                            }}
-                          </Draggable>
-                        ))}
-                      </ListContainer>
-                    </Box>
-                    {provided?.placeholder}
-                  </StageContainer>
-                );
-              }}
-            </Droppable>
-          ))}
-
-          {/* Add the new "Delete" area */}
-          <Droppable droppableId="deleteArea" key="deleteArea">
-            {(provided) => (
-              <StageContainer
-                item
-                xs={12}
-                sm={6}
-                md={3}
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                sx={{
-                 // margin: "90px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  height: "100px",
-                  width: "100px",
-                  "&:hover": {
-                    cursor: "pointer",
-                    background: "#f0f0f0",
-                  },
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography sx={{ mx: 2.5, mt: 1, fontWeight: "700" }}>
+                          {allStages[index]}
+                        </Typography>
+                        <ListContainer>
+                          {stage?.map((ticket, i) => (
+                            <Draggable
+                              key={ticket?.id}
+                              draggableId={ticket?.id}
+                              index={index}
+                            >
+                              {(provided, snapshot) => {
+                                return (
+                                  <CardContainer
+                                    component={"li"}
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                  >
+                                    <TicketCard
+                                      isDialogOpen={isDialogOpen}
+                                      setIsDialogOpen={setIsDialogOpen}
+                                      data={ticket}
+                                      index={i}
+                                    />
+                                  </CardContainer>
+                                );
+                              }}
+                            </Draggable>
+                          ))}
+                        </ListContainer>
+                      </Box>
+                      {provided?.placeholder}
+                    </StageContainer>
+                  );
                 }}
-              >
-                <Box
+              </Droppable>
+            ))}
+
+            {/* Add the new "Delete" area */}
+            <Droppable droppableId="deleteArea" key="deleteArea">
+              {(provided) => (
+                <StageContainer
+                  item
+                  xs={12}
+                  sm={6}
+                  md={3}
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
                   sx={{
-                    height: "30px",
-                    width: "30px",
+                    margin: "10px", 
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    border: "1px solid #000", // Add a border for visual reference
+                    flexDirection: "column",
+                    height: "100px",
+                    width: "100px",
+                    backgroundColor: "#f0f0f0", 
+                    
+                    "&:hover": {
+                      listStyleType: "none",
+                      cursor: "pointer",
+                      backgroundColor: "#e0e0e0", 
+                    },
                   }}
                 >
-                  <DeleteIcon />
-                </Box>
+                  <Box
+                    sx={{
+                      height: "30px",
+                      width: "30px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      border: "1px solid #000", // Add a border for visual reference
+                    }}
+                  >
+                    <DeleteIcon />
+                  </Box>
 
-                {provided?.placeholder}
-              </StageContainer>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </Grid>
-      <LazyModal>
-        <DialogTitle id="alert-dialog-title">Remove Ticket</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={deleteHandler} autoFocus>
-            Yes
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => dispatch(closeModal())}
-            autoFocus
-          >
-            No
-          </Button>
-        </DialogActions>
-      </LazyModal>
-    </KanbanBoardContainer>
+                  {provided?.placeholder}
+                </StageContainer>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </Grid>
+        <LazyModal>
+          <DialogTitle id="alert-dialog-title">Remove Ticket</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" onClick={deleteHandler} autoFocus>
+              Yes
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => dispatch(closeModal())}
+              autoFocus
+            >
+              No
+            </Button>
+          </DialogActions>
+        </LazyModal>
+      </KanbanBoardContainer>
     </Suspense>
-  
   );
 };
