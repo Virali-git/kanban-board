@@ -16,8 +16,9 @@ import {
   deleteTask,
   deleteDataSelector,
   setTaskData,
+  setDeleteData,
 } from "../../redux/dashboardSlice";
-import { closeModal } from "../../redux/dialogSlice";
+import { closeModal, openModal } from "../../redux/dialogSlice";
 import { Modal } from "../Modal/Modal";
 import { TicketCard } from "../TicketCard/TicketCard";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
@@ -29,6 +30,7 @@ import {
   KanbanTitle,
   StageContainer,
 } from "./KanbanBoard.styles";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
   const dispatch = useDispatch();
@@ -36,6 +38,7 @@ export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
   const allTask = useSelector(allTasksSelector);
   const allStages = useSelector(stagesSelector);
   const [allTaskData, setAllTaskData] = useState([]);
+  const [deletedTickets, setDeletedTickets] = useState([]);
 
   useEffect(() => {
     if (allTask?.length) {
@@ -47,49 +50,72 @@ export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
     }
   }, [allTask]);
 
-/**
- * Deletes a task and closes the modal.
- * @function deleteHandler
- */
-const deleteHandler = () => {
-  dispatch(deleteTask(deleteData)); // Dispatches the action to delete the task using the provided `deleteData`.
-  dispatch(closeModal()); // Dispatches the action to close the modal.
-};
+  /**
+   * Deletes a task and closes the modal.
+   * @function deleteHandler
+   */
+  const deleteHandler = () => {
+    console.log("@@@@@@DELTETE", deleteData);
 
-/**
- * Handles the end of a task drag and drop operation.
- * @function dragEndHandler
- * @param {Object} result - The result object containing information about the drag and drop operation.
- */
-const dragEndHandler = (result) => {
-  const { source, destination, draggableId } = result;
-  let allTaskData = [...allTask]; // Creates a copy of all tasks.
-  allTaskData = allTaskData?.map((task) => {
-    if (task?.id === draggableId)
-      return { ...task, stage: mapStage(destination?.droppableId) }; // Updates the task's stage based on the destination droppableId using the `mapStage` function.
-    else return task;
-  });
-  dispatch(setTaskData(allTaskData)); // Dispatches the action to update the task data in the store with the modified `allTaskData`.
-};
+    dispatch(deleteTask(deleteData)); // Dispatches the action to delete the task using the provided `deleteData`.
+    dispatch(closeModal()); // Dispatches the action to close the modal.
+  };
 
-/**
- * Maps stage names to their corresponding indexes.
- * @function mapStage
- * @param {string} stage - The name of the stage.
- * @returns {number} The corresponding index of the stage.
- */
-const mapStage = (stage) => {
-  switch (stage) {
-    case "Backlog":
-      return 0;
-    case "To-Do":
-      return 1;
-    case "On Going":
-      return 2;
-    default:
-      return 3;
-  }
-};
+  /**
+   * Handles the end of a task drag and drop operation.
+   * @function dragEndHandler
+   * @param {Object} result - The result object containing information about the drag and drop operation.
+   */
+  const dragEndHandler = (result) => {
+    const { source, destination, draggableId } = result;
+    const ticketToDelete = allTask.find((task) => task.id === draggableId);
+
+    // If dropped outside of a droppable area, do nothing
+    if (!destination) {
+      return;
+    }
+
+    // If dropped into the "Delete" area
+    if (destination.droppableId === "deleteArea") {
+      console.log("@@@inside delete area", ticketToDelete);
+      //dispatch(openModal());
+      dispatch(deleteTask(ticketToDelete));
+      //   dispatch(setDeleteData(ticketToDelete));
+
+      console.log("@@@DATA", allTask);
+      // setDeletedTickets((prevDeletedTickets) => [
+      //   ...prevDeletedTickets,
+      //   ticketToDelete,
+      // ]);
+    } else {
+      // If dropped into a stage, update the task's stage
+      const updatedTasks = allTask.map((task) =>
+        task.id === draggableId
+          ? { ...task, stage: mapStage(destination.droppableId) }
+          : task
+      );
+      dispatch(setTaskData(updatedTasks));
+    }
+  };
+
+  /**
+   * Maps stage names to their corresponding indexes.
+   * @function mapStage
+   * @param {string} stage - The name of the stage.
+   * @returns {number} The corresponding index of the stage.
+   */
+  const mapStage = (stage) => {
+    switch (stage) {
+      case "Backlog":
+        return 0;
+      case "To-Do":
+        return 1;
+      case "On Going":
+        return 2;
+      default:
+        return 3;
+    }
+  };
 
   return (
     <KanbanBoardContainer>
@@ -156,7 +182,6 @@ const mapStage = (stage) => {
                                   <TicketCard
                                     isDialogOpen={isDialogOpen}
                                     setIsDialogOpen={setIsDialogOpen}
-                                    ref={provided.innerRef}
                                     data={ticket}
                                     index={i}
                                   />
@@ -173,6 +198,47 @@ const mapStage = (stage) => {
               }}
             </Droppable>
           ))}
+
+          {/* Add the new "Delete" area */}
+          <Droppable droppableId="deleteArea" key="deleteArea">
+            {(provided) => (
+              <StageContainer
+                item
+                xs={12}
+                sm={6}
+                md={3}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  height: "100px",
+                  width: "100px",
+                  "&:hover": {
+                    cursor: "pointer",
+                    background: "#f0f0f0",
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    height: "30px",
+                    width: "30px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    border: "1px solid #000", // Add a border for visual reference
+                  }}
+                >
+                  <DeleteIcon />
+                </Box>
+
+                {provided?.placeholder}
+              </StageContainer>
+            )}
+          </Droppable>
         </DragDropContext>
       </Grid>
       <Modal>

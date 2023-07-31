@@ -91,6 +91,7 @@ export const TicketCard = (props) => {
           </IconButton>
           <IconButton
             onClick={() => {
+              console.log("vvv@@@@data: " + JSON.stringify(data));
               dispatch(openModal());
               dispatch(setDeleteData(data));
             }}
