@@ -1,4 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+const apiUrl = "http://localhost:5000/users"; // URL of the mock API
+// Create an async thunk to fetch data from the API
+export const fetchDataFromServer = createAsyncThunk(
+  "dashboard/fetchData",
+  async () => {
+    const response = await axios.get(apiUrl);
+    return response.data;
+  }
+);
 
 export const dashboardSlice = createSlice({
   name: "dashboard",
@@ -85,7 +95,19 @@ export const dashboardSlice = createSlice({
     clearDeleteData: (state, action) => {
       state.deleteData = {};
     },
+
+    getDataFromServer:(state, action) => {
+      console.log("@@@Payload", action?.payload);
+
+      state.allTasks = action?.payload.allTasks;
+    }
   },
+  extraReducers: (builder) => {
+    // When fetchDataFromServer is fulfilled, update the allTasks state with the fetched data
+    builder.addCase(fetchDataFromServer.fulfilled, (state, action) => {
+      console.log("@@@Payload", action?.payload.allTasks);
+      state.allTasks = action?.payload.allTasks
+    });}
 });
 
 export const {
@@ -100,6 +122,8 @@ export const {
   setDeleteData,
   clearDeleteData,
 } = dashboardSlice.actions;
+
+
 
 export const allTasksSelector = (state) => state.dashboard.allTasks;
 export const stagesSelector = (state) => state.dashboard.stages;

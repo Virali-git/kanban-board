@@ -17,6 +17,7 @@ import {
   deleteDataSelector,
   setTaskData,
   setDeleteData,
+  fetchDataFromServer,
 } from "../../redux/dashboardSlice";
 import { closeModal, openModal } from "../../redux/dialogSlice";
 import { Modal } from "../Modal/Modal";
@@ -50,6 +51,14 @@ export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
     }
   }, [allTask]);
 
+  useEffect(() => {
+    // Dispatch the async thunk to fetch data from the server
+    dispatch(fetchDataFromServer());
+  }, [dispatch]);
+
+  {
+    console.log("@@@@VIROAI", allTask);
+  }
   /**
    * Deletes a task and closes the modal.
    * @function deleteHandler
@@ -210,6 +219,7 @@ export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 sx={{
+                 // margin: "90px",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
