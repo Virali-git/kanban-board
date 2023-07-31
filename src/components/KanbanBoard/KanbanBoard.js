@@ -1,3 +1,5 @@
+import React, { Suspense } from "react";
+
 import {
   Box,
   Button,
@@ -20,7 +22,6 @@ import {
   fetchDataFromServer,
 } from "../../redux/dashboardSlice";
 import { closeModal, openModal } from "../../redux/dialogSlice";
-import { Modal } from "../Modal/Modal";
 import { TicketCard } from "../TicketCard/TicketCard";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import {
@@ -32,6 +33,9 @@ import {
   StageContainer,
 } from "./KanbanBoard.styles";
 import DeleteIcon from "@mui/icons-material/Delete";
+
+const LazyModal = React.lazy(() => import("../Modal/Modal"));
+
 
 export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
   const dispatch = useDispatch();
@@ -127,7 +131,8 @@ export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
   };
 
   return (
-    <KanbanBoardContainer>
+    <Suspense fallback={<div>Loading...</div>}>
+  <KanbanBoardContainer>
       <KanbanHeader>
         <KanbanTitle>Kanban Board</KanbanTitle>
         <Typography>Created: {allTask?.length}</Typography>
@@ -251,7 +256,7 @@ export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
           </Droppable>
         </DragDropContext>
       </Grid>
-      <Modal>
+      <LazyModal>
         <DialogTitle id="alert-dialog-title">Remove Ticket</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -270,7 +275,9 @@ export const KanbanBoard = ({ isDialogOpen, setIsDialogOpen }) => {
             No
           </Button>
         </DialogActions>
-      </Modal>
+      </LazyModal>
     </KanbanBoardContainer>
+    </Suspense>
+  
   );
 };

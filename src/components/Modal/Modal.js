@@ -2,7 +2,7 @@ import { Dialog } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal, isModalOpenSelector } from "../../redux/dialogSlice";
 
-export const Modal = (props) => {
+const Modal = (props) => {
   const openDialog = useSelector(isModalOpenSelector);
   const dispatch = useDispatch();
   const { children } = props;
@@ -17,3 +17,5 @@ export const Modal = (props) => {
     </Dialog>
   );
 };
+
+export default Modal;
