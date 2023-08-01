@@ -22,10 +22,6 @@
         "stage": 2,
         "id": "3"
       }
-    ],
-    "isTaskEditable": false,
-    "editData": {},
-    "deleteData": {},
-    "stages": ["Backlog", "To-Do", "On Going", "Done"]
+    ]
   }
 }

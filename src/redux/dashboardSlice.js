@@ -1,11 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const apiUrl = "http://localhost:5000/users"; // URL of the mock API
+const apiUrl = "http://localhost:3000/users"; // URL of the mock API
+const apiUrl2 = "http://localhost:3000/users/allTasks"; // URL of the mock
 // Create an async thunk to fetch data from the API
 export const fetchDataFromServer = createAsyncThunk(
   "dashboard/fetchData",
   async () => {
     const response = await axios.get(apiUrl);
+    return response.data;
+  }
+);
+
+// Create an async thunk to post data to the API
+export const postDataToServer = createAsyncThunk(
+  "dashboard/postData",
+  async (data) => {
+
+    //const tasksArray = data?.users?.allTasks;
+    console.log("@@tasksArray", {allTasks: [...data] });
+    //JSON.stringify(this.state.singledata)
+
+    const response = await axios.post(apiUrl, {allTasks: [...data] });
     return response.data;
   }
 );
@@ -107,7 +122,14 @@ export const dashboardSlice = createSlice({
     builder.addCase(fetchDataFromServer.fulfilled, (state, action) => {
       console.log("@@@Payload", action?.payload.allTasks);
       state.allTasks = action?.payload.allTasks
-    });}
+    });
+    builder.addCase(postDataToServer.fulfilled, (state, action) => {
+      // You can handle the response from the server here if needed
+      // For example, if the response contains new data, you can update the state with it.
+      // state.allTasks = action.payload;
+      console.log("Data posted to the server successfully");
+    });
+  }
 });
 
 export const {

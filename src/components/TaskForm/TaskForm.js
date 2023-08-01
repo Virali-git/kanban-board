@@ -28,6 +28,7 @@ import {
   editDataSelector,
   setUpdateData,
   setTaskUnEditable,
+  postDataToServer,
 } from "../../redux/dashboardSlice";
 import { v4 as uuidv4 } from "uuid";
 import styled from "@emotion/styled";
@@ -75,6 +76,7 @@ const formik = useFormik({
 
       // Dispatches the action to update the task list in the store with the new task.
       dispatch(setTaskData(updatedTaskList));
+      dispatch(postDataToServer(updatedTaskList))
 
       // Resets the form to its initial values.
       formik.resetForm();
